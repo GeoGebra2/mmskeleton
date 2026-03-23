@@ -103,8 +103,13 @@ def build(detection_cfg,
 
         # output results
         annotations = sorted(annotations, key=lambda x: x['frame_index'])
-        category_id = video_categories[video_file][
-            'category_id'] if video_file in video_categories else -1
+        if video_file in video_categories:
+            video_label = video_categories[video_file]
+            actor_id = video_label[
+                'actor_id'] if 'actor_id' in video_label else video_label.get(
+                    'category_id', -1)
+        else:
+            actor_id = -1
         info = dict(
             video_name=video_file,
             resolution=reader.resolution,
@@ -113,7 +118,7 @@ def build(detection_cfg,
             keypoint_channels=['x', 'y', 'score'],
             version='1.0')
         video_info = dict(
-            info=info, category_id=category_id, annotations=annotations)
+            info=info, actor_id=actor_id, category_id=actor_id, annotations=annotations)
         with open(os.path.join(out_dir, video_file + '.json'), 'w') as f:
             json.dump(video_info, f)
 

@@ -46,7 +46,7 @@ class SkeletonDataset(torch.utils.data.Dataset):
             data = json.load(f)
 
         resolution = data['info']['resolution']
-        category_id = data['category_id']
+        actor_id = data['actor_id'] if 'actor_id' in data else data['category_id']
         annotations = data['annotations']
         num_frame = data['info']['num_frame']
         num_keypoints = data['info']['num_keypoints']
@@ -90,4 +90,4 @@ class SkeletonDataset(torch.utils.data.Dataset):
         if self.random_move:
             data = skeleton.random_move(data)
 
-        return data, category_id
+        return data, actor_id

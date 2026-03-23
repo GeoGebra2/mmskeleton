@@ -84,7 +84,9 @@ def transpose(data, order, key='data'):
     return data
 
 
-def to_tuple(data, keys=['data', 'category_id']):
+def to_tuple(data, keys=None):
+    if keys is None:
+        keys = ['data', 'actor_id'] if 'actor_id' in data else ['data', 'category_id']
     return tuple([data[k] for k in keys])
 
 
